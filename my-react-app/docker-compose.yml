@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+  app:
+    build: .
+    container_name: app
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      profile: prod
+  db:
+    image: mongo:4.2.3
+    container_name: db
+    restart: unless-stopped
+    command: mongod --auth
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongodbuser
+      MONGO_INITDB_ROOT_PASSWORD: your_mongodb_root_password
+      MONGO_INITDB_DATABASE: tech
+      MONGODB_DATA_DIR: /data/db
+      MONDODB_LOG_DIR: /dev/null
+    volumes:
+      - ./init-db.js:/docker-entrypoint-initdb.d/init.js
+
+
